@@ -3,16 +3,6 @@
 address_number = "9524"          # EXAMPLE => "6906" Mexicala
 address_street = "Patrician"      # EXAMPLE => "Mexicala"
 
-'''
-Contact Info:
--Appraiser: Mail and make payment to Pasco County Property Appraiser, P.O. Box 401, Dade City, FL 33526. 352-521-4433
--Taxes: Mail and make payment to Pasco County Tax Collector, Post Office Box 276, Dade City, Florida 33526-0276. 352-521-4360
--Utilities: Mail and make payable to Pasco County Utilities, PO Box 2139 New Port Richey, FL 34656-2139. For Overnight Delivery, using Fed-Ex or UPS mail and make payment to Utilities Customer Information & Services, 7536 State Street New Port Richey, FL 34654 (Do Not Use USPS for Overnight Delivery). 
-    WREC: Send payments to: P.O. Box 100, Dade City, FL 33526-0100. 352-567-5133
--Permits: Mail and make payment to Pasco County Permitting, 8731 Citizens Drive, New Port Richey, FL 34654. 727-847-8126  
--Code: Mail and make payment to Pasco County Code Enforcement, 8731 Citizens Drive, New Port Richey, FL 34654. 727-847-8171
-
-'''
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -20,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains as AC 
+import os
 # from requests_html import HTMLSessions
 # from helium import *
 import time

@@ -15,6 +15,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains as AC 
+import os
 # from requests_html import HTMLSessions
 # from helium import *
 import time
@@ -25,11 +26,16 @@ driver = webdriver.Chrome(PATH)
 
 from selenium.webdriver.chrome.options import Options
 chrome_options = Options()
-chrome_options.add_experimental_option("detach", True)
-# options.AddExcludedArgument("enable-automation")
+Options().binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+#To explain whats heppening below: (https://medium.com/@romik.kelesh/how-to-deploy-a-python-web-scraper-with-selenium-on-heroku-1459cb3ac76c)
+# Options().add_argument("--headless")
+Options().add_argument("--disable-dev-shm-usage")#Implement traditional shared memory. NOTE: will write shared memory files into /tmp instead of /dev/shm
+Options().add_argument("--no-sandbox")      #is an additional feature from Chrome, which aren’t included on the Linux box that Heroku spins up for you
+# chrome_options.add_experimental_option("detach", True)
+# options.AddExcludedArgument("enable-automation") 
 
 # APPRAISALS:  ----------------------------------------------------------------
-driver.get("https://www.ocpafl.org/searches/ParcelSearch.aspx") #opens chrome @ address (uses the driver to get the page*)
+driver.get(" ") #opens chrome @ address (uses the driver to get the page*)
 # print(driver.title)
 # time.sleep(2) # tells the bot to wait to load the page.
 agree = driver.find_element_by_id("popup_ok")
@@ -56,11 +62,10 @@ print(parcel_num)
 
 # TAXES:
 # set tax selector 
-driver.execute_script('''window.open("https://www.octaxcol.com/taxes/about-property-tax/property-tax-search-tax-roll-download/
-", "_Taxes_tab");''') # "_blank = name of new tab"
+driver.execute_script('''window.open(" ", "_Taxes_tab");''') # "_blank = name of new tab"
 time.sleep(5)
 
-# UTILITIES: 
+# UTILITIES: ------------------------------------------------------------------------
 '''The plan for this section is to automate the sending of the email using the basic form for the ocu format. May need to compile a list or hardcode the email of the correct address.
 -will need to log into Camson gmail
 -be able to compose new email
@@ -82,6 +87,7 @@ driver.execute_script('''window.open(" ", "_Permits_tab");''') # "_blank = name 
 # print("CURRENT WINDOW HANDLE = ", driver.current_window_handle)
 # driver.execute_script(script, args) # allows for the execution of JS 
 driver.execute_script('''window.open(" ", "_Code_tab");''') # "_blank = name of new tab"
+
 log_UN = driver.find_element_by_xpath("//*[@id='ctl00_PlaceHolderMain_LoginBox_txtUserId']")
 log_UN.send_key("camson.crown.capital@gmail.com")
 log_PW = driver.find_element_by_xpath("//*[@id='ctl00_PlaceHolderMain_LoginBox_txtPassword']")
@@ -97,3 +103,24 @@ try:
     print(main)
 except:
     main = driver.find_element_by_id("main")
+
+    '''
+    -------------------------------------------------------------------Notes: /To Do
+    --Dynamic html workaround: Still need to impament mouse movement and mouse clicks to replicate user activity for each script on their given muni pages.  []
+    The instruction for this can be found in 'automate the boring stuff' section 16 lesson 48 & 49.
+
+    --Taking screen shots: Lesson 50 = taking screen shots and combining this with mouse movement should yeld cut outs based on default  resolution. 
+                                        Automate the Boring Stuff @ (https://automatetheboringstuff.com/) []
+
+    --Utilities email requests; can be automated from Automate the boring stuff section 15.
+    *Other resources will be in favorites folder, request at need. 
+
+    -**-Plan for deployment: use heroku to host and possibly headlessly run selenium scripts on the cloud. May need to implement try and except blocks to by pass bot detection on some sites OR use proxy lists (https://www.youtube.com/watch?v=B4VPmdteI5A&ab_channel=Octoparse) []
+
+    --------------2/14/21
+    -host chrome webdriver on heroku    []
+    -code out as much as possible   []
+    -Keep other dev up to date  []
+    -make camson heroku account []
+
+    '''
