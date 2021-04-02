@@ -2,23 +2,23 @@
 
 # __ County
 
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  >ENTER ADDRESS BELOW<
 
-full_address = "111 main"
-
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+from tkinter import *
+from tkinter import simpledialog   #input input()
+from tkinter import messagebox   #output print()
+from PIL import ImageTk, Image
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains as AC 
-import os
 # from requests_html import HTMLSessions
 # from helium import *
 import time
+# import pyautogui
+# assign .exe to var driver so it can grab pages.
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
@@ -33,6 +33,95 @@ Options().add_argument("--disable-dev-shm-usage")#Implement traditional shared m
 Options().add_argument("--no-sandbox")      #is an additional feature from Chrome, which aren’t included on the Linux box that Heroku spins up for you
 # chrome_options.add_experimental_option("detach", True)
 # options.AddExcludedArgument("enable-automation") 
+
+
+#:::::::::::::::::::::::::::::::::::::::::::::::::::Splash Screen
+# splash_root = Tk()
+# splash_root.title("Camson Crown Capital")
+# splash_root.geometry("330x200+-1500+200")
+
+# splash_label = Label(splash_root, text="splash screenxxx")
+# splash_label.pack()
+
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::GUI
+# def get_address():   #showinfo, showwarning, showerror, askquestion, askokcancel,  "ok" or "cancel" return 1 or 0
+
+#     address_Input = simpledialog.askstring(title= "Property Address", prompt= "Please enter address:")
+#     print("User input was - ", address_Input) 
+#     # return address_Input
+#     close_win()
+    
+    
+# Get user input for parcel number:
+#parcel_Input = simpledialog.askinteger(title="Parcel Number", prompt="Parel Number")
+
+def close_win():
+    window.destroy()
+
+entered_text = "x"
+def click():
+    global entered_text
+    entered_text = textentry.get()
+    # global entered_text
+    # print(entered_text)
+    close_win()
+    return entered_text
+    
+
+
+window = Tk()
+window.title('Camson Crown (Uni. Hillsborough)')
+window.configure(background="light grey")
+window.geometry("400x300")
+
+#   Open image
+org_pic = Image.open("Hillsborough.Unincorporated/CCC Logo2a.png")
+#   Resize image
+resized = org_pic.resize((400, 300), Image.ANTIALIAS)
+
+new_pic = ImageTk.PhotoImage(resized)
+
+# pic = ImageTk.PhotoImage(file="Hillsborough.Unincorporated/CCC Logo2a.png")
+#   Image label
+my_label= Label(window, image=new_pic)
+my_label.pack()
+
+#   instructions:
+# instruction = Label(window, text="Enter address here:")   # text inside of input box
+# instruction.place(100, y=100)
+
+#   create text entry box:
+textentry = Entry(window, width=25, bg="white", borderwidth=5)   #textVariable=enteredAddress, Default val = .!entry
+textentry.place(x=120, y=120)
+# entered_text = textentry     #default val is .!entry
+placeholder = "Example: 1015 Mexicala"
+textentry.insert(0, placeholder)
+print()
+
+#create text box label:
+entry_box_label = Label(window, text="Address here")
+entry_box_label.place(x=162, y=95)
+
+#   add a submit button:
+submit_button = Button(window, text="SUBMIT", width=7, command=click)
+submit_button.place(x=168, y=148)
+
+window.mainloop() # root.mainloop will need to be at the end of the gui setup 
+
+#Create a Label widget to display the text or Image  # NOT WORKING > unknown error.
+# label = tk.Label(window, image = img)
+# label.pack(fill = "both", expand= "yes")
+
+# button = Button(window, text="popup", command=get_address)
+# button.pack()  #initiates
+# get_address()
+
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     Selenium Start
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  >ENTER ADDRESS BELOW<
+
+full_address = "111 main"
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # APPRAISALS:  ----------------------------------------------------------------
 driver.get(" ") #opens chrome @ address (uses the driver to get the page*)
