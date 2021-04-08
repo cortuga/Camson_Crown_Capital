@@ -1,40 +1,129 @@
-# Pasco County 
 
-address_number = "9524"          # EXAMPLE => "6906" Mexicala
-address_street = "Patrician"      # EXAMPLE => "Mexicala"
-
-
+from tkinter import *
+from tkinter import simpledialog   #input input()
+from tkinter import messagebox   #output print()
+from PIL import ImageTk, Image
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains as AC 
-import os
 # from requests_html import HTMLSessions
 # from helium import *
 import time
+# import pyautogui
+# assign .exe to var driver so it can grab pages.
+
+#:::::::::::::::::::::::::::::::::::::::::::::::::::Splash Screen
+# splash_root = Tk()
+# splash_root.title("Camson Crown Capital")
+# splash_root.geometry("330x200+-1500+200")
+
+# splash_label = Label(splash_root, text="splash screenxxx")
+# splash_label.pack()
+
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::GUI
+# def get_address():   #showinfo, showwarning, showerror, askquestion, askokcancel,  "ok" or "cancel" return 1 or 0
+
+#parcel_Input = simpledialog.askinteger(title="Parcel Number", prompt="Parcel Number")
+
+class EntryWindow:
+    def __init__(self):
+        self.window = Tk()
+        self.window.title('Camson Crown (Uni. Hillsborough)')
+        self.window.configure(background="white")
+        self.window.geometry("400x300")
+
+        # # Open image:
+        # self.org_pic = Image.open("Hillsborough.Unicorporated\CCC Logo2a.png")
+        # # Resize image:
+        # self.resized = org_pic.resize((400, 300), Image.ANTIALIAS)
+        # self.new_pic = ImageTk.PhotoImage(resized)
+        # # Labels for img:
+        # self.my_label = Label(EntryWindow, image=new_pic)
+        # # self.my_label.pack()
+
+
+        #   create text entry box:
+        self.textentry = Entry(self.window, width=20, bg="white", borderwidth=5, font=(20))   #textVariable=enteredAddress, Default val = .!entry
+        self.textentry.place(x=160, y=120)
+        self.placeholder = "Example: 1015 Mexicala"
+        self.textentry.insert(0, self.placeholder)
+        self.property_address = ''
+
+        #create text box label:
+        self.entry_box_label = Label(self.window, text="Address here ->", font=(20))
+        self.entry_box_label.place(x=37, y=123)
+
+        #   add a submit button:
+        self.submit_button = Button(self.window, text="SUBMIT", width=19, font=(35), command=self.submit)
+        self.submit_button.place(x=165, y=150)
+
+        self.window.mainloop()
+
+    def submit(self):
+        self.property_address = self.textentry.get()
+        self.window.destroy()
+        return '{}'.format(self.property_address)  # not sure if this return is needed. 
+
+
+main_window = EntryWindow()
+print(main_window.property_address)
+
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     Selenium Start
+
+propertyAddress = main_window.property_address # default "1015 Mexicala"  
+
 
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
-driver.implicitly_wait(30000)
 
 from selenium.webdriver.chrome.options import Options
 chrome_options = Options()
-chrome_options.add_experimental_option("detach", True)
+
+# PATH = "C:\Program Files (x86)\chromedriver.exe"
+# op = webdriver.ChromeOptions()
+# op.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+# op.add_argument("--headless")
+# op.add_argument("--no-sandbox")
+# op.add_argument("--disable-dev-sh-usage")
+
+# driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=op)
+# PATH = "/usr/bin/google-chrome"
+# driver = webdriver.Chrome(PATH)
+# >>>>>>> 2e49cc0572eec9ddd2d04fae3a0f8f5d45629ad6
+# Options().binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+
+#To explain whats heppening below: (https://medium.com/@romik.kelesh/how-to-deploy-a-python-web-scraper-with-selenium-on-heroku-1459cb3ac76c)
+# Options().add_argument("--headless") # will open without chrome window
+# Options().add_argument("--disable-dev-shm-usage")#Implement traditional shared memory. NOTE: will write shared memory files into /tmp instead of /dev/shm
+# Options().add_argument("--no-sandbox")      #is an additional feature from Chrome, which aren’t included on the Linux box that Heroku spins up for you
+# driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"))#, chrome_options=chrome_options)
+driver.implicitly_wait(1000)
+# chrome_options.add_experimental_option("detach", True)
 # options.AddExcludedArgument("enable-automation") 
 
 
-# APPRAISALS:  ----------------------------------------------------------------
+
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: APPRAISALS:
 driver.get("https://search.pascopa.com/") #opens chrome @ address (uses the driver to get the page*)
 # print(driver.title)
 
 
 # Finds the page element/search box
 add_search0 = driver.find_element_by_xpath('//*[@id="add"]/table/tbody/tr[2]/td[2]/input') #finding id, name or other html data
+addressSpliter = propertyAddress.split()
+
+addressNumber = addressSpliter[0]
+addressStreet = addressSpliter[1]
+print(addressNumber)
+print(addressStreet)
+
 add_search0.send_keys(address_number)             # EXAMPLE => "6906" Mexicala 
-full_address = address_number + " " + address_street
+full_address = addresNumber + " " + addressStreet
 
 add_search1 = driver.find_element_by_xpath('//*[@id="add"]/table/tbody/tr[2]/td[3]/input')
 add_search1.click()
@@ -90,7 +179,7 @@ driver.execute_script('''window.open("https://pasco.county-taxes.com/public/sear
 # leaving_site.click()
 
 
-# PERMITS:   ----------------------------------------------------
+# ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::    PERMITS:   
 driver.execute_script('''window.open("https://aca-pasco.accela.com/pasco/Cap/CapHome.aspx?module=Permits&TabName=Permits&TabList=Home%7C0%7CPermits%7C1%7CLicenses%7C2%7CEnforcement%7C3%7CCurrentTabIndex%7C1", "_Permits_tab");''') # "_blank = name of new tab"
 # time.sleep(30)
 # streetNumBox = driver.find_element_by_xpath("//*[@id='ctl00_PlaceHolderMain_generalSearchForm_txtGSParcelNo']")
@@ -117,7 +206,7 @@ driver.execute_script('''window.open("https://aca-pasco.accela.com/pasco/Cap/Cap
 # time.sleep(2)
 
 # time.sleep(30000)
-#CODES:  ------------------------------------------------------------------
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     CODES:  
 # print("CURRENT WINDOW HANDLE = ", driver.current_window_handle)
 # driver.execute_script(script, args) # allows for the execution of JS 
 driver.execute_script('''window.open("https://www.pascocountyfl.net/FormCenter/Code-Compliance-12/Violation-Search-250", "_Code_tab");''') # "_blank = name of new tab"
