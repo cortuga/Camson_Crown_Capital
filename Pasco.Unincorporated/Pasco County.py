@@ -119,15 +119,15 @@ addressSpliter = propertyAddress.split()
 
 addressNumber = addressSpliter[0]
 addressStreet = addressSpliter[1]
-print(addressNumber)
-print(addressStreet)
+# print(addressNumber)
+# print(addressStreet)
 
-add_search0.send_keys(address_number)             # EXAMPLE => "6906" Mexicala 
-full_address = addresNumber + " " + addressStreet
+add_search0.send_keys(addressNumber)             # EXAMPLE => "6906" Mexicala 
+full_address = addressNumber + " " + addressStreet
 
 add_search1 = driver.find_element_by_xpath('//*[@id="add"]/table/tbody/tr[2]/td[3]/input')
 add_search1.click()
-add_search1.send_keys(address_street)         # EXAMPLE => "Mexicala"
+add_search1.send_keys(addressStreet)         # EXAMPLE => "Mexicala"
 
 add_search0.send_keys(Keys.RETURN)
 
