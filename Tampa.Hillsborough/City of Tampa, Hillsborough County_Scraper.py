@@ -3,7 +3,7 @@
 from tkinter import *
 from tkinter import simpledialog   #input input()
 from tkinter import messagebox   #output print()
-from PIL import ImageTk, Image
+# from PIL import ImageTk, Image
 import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
